@@ -9,6 +9,14 @@ function App() {
   const [customers, setCustomers] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [darkMode, setDarkMode] = useState(false); // State variable for dark mode
+
+  // Function to toggle dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    // Optionally, you can save the state to localStorage or cookies for persistence across sessions
+    // localStorage.setItem('darkMode', !darkMode);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +36,25 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Apply dark mode class to body element
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
+
   return (
     <div className="container mx-auto p-4">
+      <div className="flex justify-end mb-2">
+        <button
+          className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-800"
+          onClick={toggleDarkMode}
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+      </div>
       <h1 className="text-2xl font-bold mb-4">Customer Transactions</h1>
       <CustomerTable
         customers={customers}
@@ -42,6 +67,7 @@ function App() {
             transactions={transactions.filter(
               (t) => t.customer_id === selectedCustomer.id
             )}
+            darkMode={darkMode} // Pass dark mode state to nested components if needed
           />
         </ErrorBoundary>
       )}
