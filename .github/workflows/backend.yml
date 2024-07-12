@@ -1,0 +1,32 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Deploy JSON Server
+      run: |
+        npm install -g json-server
+        json-server --watch backend/db.json --port 5000 &
+        echo "::set-output name=URL::http://localhost:5000"
+
+    - name: Upload JSON Server
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./server
