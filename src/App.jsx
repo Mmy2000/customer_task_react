@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerTable from "./components/CustomerTable";
 import CustomerChart from "./components/CustomerChart";
-import ErrorBoundary from "./components/ErrorBoundary"; // Import the ErrorBoundary component
+import ErrorBoundary from "./components/ErrorBoundary"; 
 import "./App.css";
 
 function App() {
@@ -14,7 +14,6 @@ function App() {
   // Function to toggle dark mode
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    // Optionally, you can save the state to localStorage or cookies for persistence across sessions
     // localStorage.setItem('darkMode', !darkMode);
   };
 
@@ -67,7 +66,7 @@ function App() {
             transactions={transactions.filter(
               (t) => t.customer_id === selectedCustomer.id
             )}
-            darkMode={darkMode} // Pass dark mode state to nested components if needed
+            darkMode={darkMode} 
           />
         </ErrorBoundary>
       )}
