@@ -1,10 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import "chartjs-adapter-date-fns";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function CustomerChart({ transactions }) {
   const chartRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a loading delay or handle actual data fetching logic here
+    const timer = setTimeout(() => setLoading(false), 1000); // Adjust the delay as needed
+    return () => clearTimeout(timer); // Cleanup the timer on unmount
+  }, [transactions]);
 
   useEffect(() => {
     return () => {
@@ -14,6 +22,14 @@ function CustomerChart({ transactions }) {
       }
     };
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <ClipLoader size={50} color="#000" />
+      </div>
+    );
+  }
 
   if (!transactions.length) {
     return <div>No transactions available for this customer.</div>;

@@ -2,49 +2,47 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerTable from "./components/CustomerTable";
 import CustomerChart from "./components/CustomerChart";
-import ErrorBoundary from "./components/ErrorBoundary"; 
+import ErrorBoundary from "./components/ErrorBoundary";
+import ClipLoader from "react-spinners/ClipLoader"; // Importing a spinner from react-spinners
 import "./App.css";
 
 function App() {
   const [customers, setCustomers] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [darkMode, setDarkMode] = useState(false); // State variable for dark mode
+  const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [darkModeLoading, setDarkModeLoading] = useState(false); // State variable for dark mode loading
 
-  // Function to toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    // localStorage.setItem('darkMode', !darkMode);
+    setDarkModeLoading(true);
+    setTimeout(() => {
+      setDarkMode((prevMode) => !prevMode);
+      setDarkModeLoading(false);
+    }, 500); // Simulate a loading delay for dark mode toggle
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const customersRes = await axios.get(
-          // "http://localhost:5000/customers" this is for json server
-          "https://reacttask.pythonanywhere.com/api/customers/" // this is api i created  it using django framework
+          "https://reacttask.pythonanywhere.com/api/customers/"
         );
         const transactionsRes = await axios.get(
-          // "http://localhost:5000/transactions" this is for json server
-          "https://reacttask.pythonanywhere.com/api/transactions/" // this is api i created  it using django framework
+          "https://reacttask.pythonanywhere.com/api/transactions/"
         );
         setCustomers(customersRes.data.customers);
-        // setCustomers(customersRes.data); this is for json server
         setTransactions(transactionsRes.data.transactions);
-        // setTransactions(transactionsRes.data); this is for json server
-        console.log(customersRes.data.customers);
-        // console.log(customersRes.data); this is for json server
-        console.log(transactionsRes.data.transactions);
-        //console.log(transactionsRes.data); this is for json server
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    // Apply dark mode class to body element
     if (darkMode) {
       document.body.classList.add("dark-mode");
     } else {
@@ -56,27 +54,43 @@ function App() {
     <div className="container mx-auto p-4">
       <div className="flex justify-end mb-2">
         <button
-          className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-800"
+          className={`px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 ${
+            darkMode ? "text-black" : "text-black"
+          }`}
           onClick={toggleDarkMode}
         >
-          {darkMode ? "Light Mode" : "Dark Mode"}
+          {darkModeLoading ? (
+            <ClipLoader size={20} color="#000" />
+          ) : darkMode ? (
+            "Light Mode"
+          ) : (
+            "Dark Mode"
+          )}
         </button>
       </div>
       <h1 className="text-2xl font-bold mb-4">Customer Transactions</h1>
-      <CustomerTable
-        customers={customers}
-        transactions={transactions}
-        setSelectedCustomer={setSelectedCustomer}
-      />
-      {selectedCustomer && transactions.length > 0 && (
-        <ErrorBoundary>
-          <CustomerChart
-            transactions={transactions.filter(
-              (t) => t.customer_id === selectedCustomer.id
-            )}
-            darkMode={darkMode} 
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <ClipLoader size={50} color={darkMode ? "#fff" : "#000"} />
+        </div>
+      ) : (
+        <>
+          <CustomerTable
+            customers={customers}
+            transactions={transactions}
+            setSelectedCustomer={setSelectedCustomer}
           />
-        </ErrorBoundary>
+          {selectedCustomer && transactions.length > 0 && (
+            <ErrorBoundary>
+              <CustomerChart
+                transactions={transactions.filter(
+                  (t) => t.customer_id === selectedCustomer.id
+                )}
+                darkMode={darkMode}
+              />
+            </ErrorBoundary>
+          )}
+        </>
       )}
     </div>
   );
