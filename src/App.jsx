@@ -20,14 +20,16 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customersRes = await axios.get("http://localhost:5000/customers");
-        const transactionsRes = await axios.get(
-          "http://localhost:5000/transactions"
+        const customersRes = await axios.get(
+          "https://reacttask.pythonanywhere.com/api/customers/"
         );
-        setCustomers(customersRes.data);
-        setTransactions(transactionsRes.data);
-        console.log(customersRes.data);
-        console.log(transactionsRes.data);
+        const transactionsRes = await axios.get(
+          "https://reacttask.pythonanywhere.com/api/transactions/"
+        );
+        setCustomers(customersRes.data.customers);
+        setTransactions(transactionsRes.data.transactions);
+        console.log(customersRes.data.customers);
+        console.log(transactionsRes.data.transactions);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
