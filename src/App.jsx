@@ -21,9 +21,11 @@ function App() {
     const fetchData = async () => {
       try {
         const customersRes = await axios.get(
+          // "http://localhost:5000/customers" this is for json server
           "https://reacttask.pythonanywhere.com/api/customers/"
         );
         const transactionsRes = await axios.get(
+          // "http://localhost:5000/transactions" this is for json server
           "https://reacttask.pythonanywhere.com/api/transactions/"
         );
         setCustomers(customersRes.data.customers);
