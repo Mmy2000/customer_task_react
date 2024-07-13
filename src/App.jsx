@@ -22,11 +22,11 @@ function App() {
       try {
         const customersRes = await axios.get(
           // "http://localhost:5000/customers" this is for json server
-          "https://reacttask.pythonanywhere.com/api/customers/"
+          "https://reacttask.pythonanywhere.com/api/customers/" // this is api i created  it
         );
         const transactionsRes = await axios.get(
           // "http://localhost:5000/transactions" this is for json server
-          "https://reacttask.pythonanywhere.com/api/transactions/"
+          "https://reacttask.pythonanywhere.com/api/transactions/" // this is api i created  it
         );
         setCustomers(customersRes.data.customers);
         setTransactions(transactionsRes.data.transactions);
