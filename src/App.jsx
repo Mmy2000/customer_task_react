@@ -29,9 +29,13 @@ function App() {
           "https://reacttask.pythonanywhere.com/api/transactions/" // this is api i created  it using django framework
         );
         setCustomers(customersRes.data.customers);
+        // setCustomers(customersRes.data); this is for json server
         setTransactions(transactionsRes.data.transactions);
+        // setTransactions(transactionsRes.data); this is for json server
         console.log(customersRes.data.customers);
+        // console.log(customersRes.data); this is for json server
         console.log(transactionsRes.data.transactions);
+        //console.log(transactionsRes.data); this is for json server
       } catch (error) {
         console.error("Error fetching data:", error);
       }
