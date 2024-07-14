@@ -42,6 +42,8 @@ function CustomerTable({ customers, transactions, setSelectedCustomer }) {
         <div className="flex justify-center items-center h-64">
           <ClipLoader size={50} color="#000" />
         </div>
+      ) : filteredCustomers.length === 0 ? (
+        <div className="text-center py-4 text-gray-500">No data found</div>
       ) : (
         <table className="table-auto w-full border-collapse border border-gray-200">
           <thead>

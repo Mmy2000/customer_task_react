@@ -27,12 +27,16 @@ function App() {
       try {
         const customersRes = await axios.get(
           "https://reacttask.pythonanywhere.com/api/customers/"
+          // "http://localhost:5000/customers" this is for json server
         );
         const transactionsRes = await axios.get(
           "https://reacttask.pythonanywhere.com/api/transactions/"
+          // "http://localhost:5000/transactions" this is for json server
         );
         setCustomers(customersRes.data.customers);
+        // setCustomers(customersRes.data); this is for json server
         setTransactions(transactionsRes.data.transactions);
+        // setTransactions(transactionsRes.data); this is for json server
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
