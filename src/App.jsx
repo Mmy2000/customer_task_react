@@ -27,16 +27,18 @@ function App() {
       try {
         const customersRes = await axios.get(
           // "https://reacttask.pythonanywhere.com/api/customers/"
+          // "http://localhost:5000/customers"  this is for json server in local
           "https://mmy2000.github.io/json_server/customers.json" // this is for json server
         );
         const transactionsRes = await axios.get(
           // "https://reacttask.pythonanywhere.com/api/transactions/"
+          // "http://localhost:5000/transactions" this is for json server in local
           "https://mmy2000.github.io/json_server/transactions.json" // this is for json server
         );
-        // setCustomers(customersRes.data.customers);
+        // setCustomers(customersRes.data); // this is for json server in local
         setCustomers(customersRes.data.customers); // this is for json server
-        // setTransactions(transactionsRes.data.transactions);
-        setTransactions(transactionsRes.data.transactions);  //this is for json server
+        // setTransactions(transactionsRes.data); // this is for json server in local
+        setTransactions(transactionsRes.data.transactions); //this is for json server
         console.log(customersRes.data);
         console.log(transactionsRes.data);
         setLoading(false);
